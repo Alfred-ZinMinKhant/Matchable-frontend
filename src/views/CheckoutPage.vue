@@ -1,5 +1,7 @@
 <template>
   <div class="grid gap-4">
+    <div v-if="loading" class="loading-indicator">Loading sessions...</div>
+
     <SessionSelection
       :sessions="sessions"
       :cart="cart"
@@ -26,14 +28,18 @@ export default {
     return {
       sessions: [],
       cart: [],
+      loading: false,
     };
   },
   methods: {
     async fetchSessions() {
+      this.loading = true;
+
       const cachedSessions = localStorage.getItem("sessions");
 
       if (cachedSessions) {
         this.sessions = JSON.parse(cachedSessions);
+        this.loading = false;
       } else {
         try {
           const response = await axios.get(
@@ -41,8 +47,10 @@ export default {
           );
           this.sessions = response.data;
           localStorage.setItem("sessions", JSON.stringify(this.sessions));
+          this.loading = false;
         } catch (error) {
           console.error("Error fetching sessions:", error);
+          this.loading = false;
         }
       }
     },
@@ -77,3 +85,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.loading-indicator {
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 20px;
+  color: #007bff;
+  font-weight: bold;
+}
+</style>
