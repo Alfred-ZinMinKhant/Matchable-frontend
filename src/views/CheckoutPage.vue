@@ -30,13 +30,20 @@ export default {
   },
   methods: {
     async fetchSessions() {
-      try {
-        const response = await axios.get(
-          "https://matchable-backend.onrender.com/sessions"
-        );
-        this.sessions = response.data;
-      } catch (error) {
-        console.error("Error fetching sessions:", error);
+      const cachedSessions = localStorage.getItem("sessions");
+
+      if (cachedSessions) {
+        this.sessions = JSON.parse(cachedSessions);
+      } else {
+        try {
+          const response = await axios.get(
+            "https://matchable-backend.onrender.com/sessions"
+          );
+          this.sessions = response.data;
+          localStorage.setItem("sessions", JSON.stringify(this.sessions));
+        } catch (error) {
+          console.error("Error fetching sessions:", error);
+        }
       }
     },
     addToCart(session) {
