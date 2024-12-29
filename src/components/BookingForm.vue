@@ -80,13 +80,16 @@ export default {
 
       try {
         // Call backend to process booking and send email
-        const response = await fetch("http://localhost:3000/bookings", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(bookingData),
-        });
+        const response = await fetch(
+          "https://matchable-backend.onrender.com/bookings",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(bookingData),
+          }
+        );
 
         if (response.ok) {
           alert(

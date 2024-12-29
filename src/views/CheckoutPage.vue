@@ -31,7 +31,9 @@ export default {
   methods: {
     async fetchSessions() {
       try {
-        const response = await axios.get("http://localhost:3000/sessions");
+        const response = await axios.get(
+          "https://matchable-backend.onrender.com/sessions"
+        );
         this.sessions = response.data;
       } catch (error) {
         console.error("Error fetching sessions:", error);
@@ -51,7 +53,10 @@ export default {
     async handleBooking(bookingDetails) {
       try {
         const payload = { ...bookingDetails, sessions: this.cart };
-        await axios.post("http://localhost:3000/bookings", payload);
+        await axios.post(
+          "https://matchable-backend.onrender.com/bookings",
+          payload
+        );
         alert("Booking successful!");
         this.cart = [];
       } catch (error) {
